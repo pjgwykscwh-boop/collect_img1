@@ -231,16 +231,10 @@ def collect_one_round(driver, collected, batch_buffer):
             min(bg_image.width,  x2 + pad),
             min(bg_image.height, y2 + pad)
         ))
+        label = "TODO"
 
-        recognized = ocr_cls.classification(crop)
-        han_chars  = [c for c in recognized if '\u4e00' <= c <= '\u9fff']
-        if han_chars:
-            label = han_chars[0]
-            auto_count += 1
-        else:
-            label = "TODO"
-
-        save_path = f"{SAVE_DIR}/{ts}_{n}_{label}.png"
+        hint_str = "".join(hint_chars) if hint_chars else "unknown"
+        save_path = f"{SAVE_DIR}/{ts}_{n}_label{label}_hint{hint_str}.png"
         crop.save(save_path)
         batch_buffer.append(save_path)
         collected += 1
